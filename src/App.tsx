@@ -26,6 +26,8 @@ export const App = (): ReactElement => {
     id: randomId()
   }, ...cur]))
 
+  console.log({ active, ended })
+
   return (
     <>
       <Grid container spacing={2} style={{ marginBottom: 62 }}>

@@ -1,5 +1,6 @@
 import { Button, Typography, CardContent, CardActions } from "@mui/material"
 import React, { ReactElement } from "react"
+
 import { ContestantColumn } from './ContestantColumn';
 import { CloseMatchDialog } from './CloseMatchDialog';
 import { Match } from "./types";
@@ -12,24 +13,13 @@ interface MatchCardProps {
    allBetters?: string[]
 }
 
-export const MatchCard = ({ match, setMatch , allBetters}: MatchCardProps): ReactElement => {
+export const MatchCard = ({ match, setMatch, allBetters }: MatchCardProps): ReactElement => {
    const { first, second, betsFirst, betsSecond, phase, winner } = match
 
    const currentMatchBetter = getBetters([match])
 
    const closeBetting = () => {
       setMatch?.({ ...match, phase: 'fighting' })
-   }
-
-   const onNewBet = (contestant: string) => (name: string) => {
-      if (currentMatchBetter.includes(name)) {
-         return
-      }
-      if (first === contestant) {
-         setMatch?.({ ...match, betsFirst: [...betsFirst, name] })
-         return
-      }
-      setMatch?.({ ...match, betsSecond: [...betsSecond, name] })
    }
 
    const closeMatch = (name: string) => {
@@ -46,13 +36,17 @@ export const MatchCard = ({ match, setMatch , allBetters}: MatchCardProps): Reac
       return <div>{firstFormatted} vs. {secondFormatted}</div>
    }
 
+   const updateBetter = (contestant: string) => (newBetters: string[]) => {
+      setMatch?.({ ...match, betsFirst: contestant === first ? newBetters : betsFirst, betsSecond: contestant === second ? newBetters : betsSecond })
+   }
+
    const betterSuggestions = (allBetters ?? []).filter(better => !currentMatchBetter.includes(better))
    return (
       <MatchCardTemplate >
          <CardContent>
             <Typography style={{ margin: 'auto', marginBottom: 16 }} variant="h4">{getTitle()}</Typography>
-            <ContestantColumn disabled={phase !== 'betting'} existingBets={betsFirst} contestant={first} onNewBet={onNewBet(first)} betterSuggestions={betterSuggestions}/>
-            <ContestantColumn disabled={phase !== 'betting'} existingBets={betsSecond} contestant={second} onNewBet={onNewBet(second)} betterSuggestions={betterSuggestions}/>
+            <ContestantColumn disabled={phase !== 'betting'} bets={betsFirst} contestant={first} betterSuggestions={betterSuggestions} updateBetters={updateBetter(first)} />
+            <ContestantColumn disabled={phase !== 'betting'} bets={betsSecond} contestant={second} betterSuggestions={betterSuggestions} updateBetters={updateBetter(second)} />
          </CardContent>
          <CardActions>
             {phase === 'betting' && <Button onClick={closeBetting}>Close Betting</Button>}
