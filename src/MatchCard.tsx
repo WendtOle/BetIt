@@ -3,17 +3,18 @@ import React, { ReactElement } from "react"
 
 import { ContestantColumn } from './ContestantColumn';
 import { CloseMatchDialog } from './CloseMatchDialog';
-import { Match } from "./types";
+import { Better, Match } from "./types";
 import { MatchCardTemplate } from "./MatchCardTemplate";
 import { getBetters } from './utils';
 
 interface MatchCardProps {
    match: Match,
    setMatch?: (match: Match) => void
-   allBetters?: string[]
+   allBetters?: Better[],
+   registerBet?: (contestant: string) => (better: string) => void
 }
 
-export const MatchCard = ({ match, setMatch, allBetters }: MatchCardProps): ReactElement => {
+export const MatchCard = ({ match, setMatch, allBetters,registerBet }: MatchCardProps): ReactElement => {
    const { first, second, betsFirst, betsSecond, phase, winner } = match
 
    const currentMatchBetter = getBetters([match])
@@ -40,13 +41,14 @@ export const MatchCard = ({ match, setMatch, allBetters }: MatchCardProps): Reac
       setMatch?.({ ...match, betsFirst: contestant === first ? newBetters : betsFirst, betsSecond: contestant === second ? newBetters : betsSecond })
    }
 
-   const betterSuggestions = (allBetters ?? []).filter(better => !currentMatchBetter.includes(better))
+   const betterSuggestions = (allBetters ?? []).filter(better => !currentMatchBetter.includes(better.name)).map(({name}) => name)
+
    return (
       <MatchCardTemplate >
          <CardContent>
             <Typography style={{ margin: 'auto', marginBottom: 16 }} variant="h4">{getTitle()}</Typography>
-            <ContestantColumn disabled={phase !== 'betting'} bets={betsFirst} contestant={first} betterSuggestions={betterSuggestions} updateBetters={updateBetter(first)} />
-            <ContestantColumn disabled={phase !== 'betting'} bets={betsSecond} contestant={second} betterSuggestions={betterSuggestions} updateBetters={updateBetter(second)} />
+            <ContestantColumn registerBet={registerBet?.(first)} disabled={phase !== 'betting'} bets={betsFirst} contestant={first} betterSuggestions={betterSuggestions} />
+            <ContestantColumn registerBet={registerBet?.(second)} disabled={phase !== 'betting'} bets={betsSecond} contestant={second} betterSuggestions={betterSuggestions} />
          </CardContent>
          <CardActions>
             {phase === 'betting' && <Button onClick={closeBetting}>Close Betting</Button>}

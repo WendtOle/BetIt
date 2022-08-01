@@ -1,9 +1,10 @@
-import { Match } from "./types"
+import { Better, Match } from "./types"
 import { uniq } from 'lodash';
 
-export const randomId = () => Math.round(Math.random() * 100000000)
+export const randomId = (): string => Math.round(Math.random() * 100000000) + ''
 
 export const defaultMatch: Match = { id: randomId(), first: 'Peter', second: 'Torsten', betsFirst: ['Theresa'], betsSecond: [], phase: 'betting' }
+export const defaultBetters: Better[] = [{name: 'Jakub', amount: 10, matches: []}, {name: 'Johannes', amount: 7, matches: []},{name: 'Xenia', amount: 3, matches: []}]
 
 export const getBetters = (matches: Match[]) => uniq(matches.reduce((acc, cur): string[] => {
     const bettersOfMatch = [...cur.betsFirst, ...cur.betsSecond]

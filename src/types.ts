@@ -4,7 +4,7 @@ export interface Match {
     second: string,
     betsFirst: string[],
     betsSecond: string[],
-    id: number,
+    id: string,
     winner?: string
 }
 

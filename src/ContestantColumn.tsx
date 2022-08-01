@@ -6,10 +6,10 @@ interface ContestantColumnProps {
    bets: string[],
    disabled: boolean;
    betterSuggestions: string[],
-   updateBetters: (updatedBetters: string[]) => void;
+   registerBet?: (name: string) => void;
 }
 
-export const ContestantColumn = ({ bets, updateBetters, contestant, disabled, betterSuggestions }: ContestantColumnProps): ReactElement => {
+export const ContestantColumn = ({ bets, registerBet, contestant, disabled, betterSuggestions }: ContestantColumnProps): ReactElement => {
    const label = `Bets on "${contestant}"`
 
    if (disabled) {
@@ -25,18 +25,21 @@ export const ContestantColumn = ({ bets, updateBetters, contestant, disabled, be
    return (
       <Autocomplete
          multiple
-         freeSolo
          value={bets}
          style={{ paddingTop: 8 }}
-         onChange={(_, newValue, reason) => {
-            if (!['createOption', 'selectOption', 'removeOption'].includes(reason)) {
+         onChange={(_, newValue, reason, details) => {
+            if (!['createOption', 'selectOption'].includes(reason)) {
                return
             }
             if (!newValue) {
                return
             }
-            updateBetters(newValue)
+            if (!details?.option) {
+               return
+            }
+            registerBet?.(details?.option)
          }}
+         disableClearable
          renderInput={(inputProps) => <TextField {...inputProps} label={label} />}
          options={betterSuggestions}
       />

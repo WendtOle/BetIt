@@ -5,12 +5,14 @@ import { BettersPage } from "./BettersPage";
 import { EndedMatchesPage } from "./EndedMatchesPage";
 import { Navigation } from "./Navigation";
 import { Better, Match, Page } from "./types";
-import { defaultMatch, randomId, getBetters } from './utils';
+import { defaultMatch, randomId, getBetters, defaultBetters } from './utils';
+
+const DEFAULT_BET_AMOUNT = 1
 
 export const App = (): ReactElement => {
   const [matches, setMatches] = useState<Match[]>([defaultMatch])
   const [page, setPage] = useState<Page>(Page.active)
-  const [betters, setBetters] = useState<Better[]>([])
+  const [betters, setBetters] = useState<Better[]>(defaultBetters)
 
   const { active, ended } = matches.reduce((acc: { active: Match[], ended: Match[] }, next: Match) => {
     if (next.phase === 'ended') {
@@ -39,13 +41,29 @@ export const App = (): ReactElement => {
     })
   }
 
+  const registerBet = (matchId: string) => (contestant: string) => (better: string) => {
+    onUpdateAmount(better)(-DEFAULT_BET_AMOUNT)
+    setMatches(cur => cur.map(match => {
+      if (match.id !== matchId) {
+        return match
+      }
+      return {
+        ...match,
+        betsFirst: match.first === contestant ? [...match.betsFirst, better] : match.betsFirst,
+        betsSecond: match.second === contestant ? [...match.betsSecond, better] : match.betsSecond
+      }
+    }))
+  }
+
+
   return (
     <>
       <Grid container spacing={2} style={{ marginBottom: 62 }}>
         {page === Page.active && <ActiveMatchesPage
           matches={active}
           setMatches={setMatches}
-          allBetters={getBetters(matches)}
+          registerBet={registerBet}
+          allBetters={betters.filter(better => better.amount >= DEFAULT_BET_AMOUNT)}
           addMatch={addMatch} />}
         {page === Page.ended && <EndedMatchesPage matches={ended} />}
         {page === Page.betters && <BettersPage onUpdateAmount={onUpdateAmount} betters={betters} onAdd={(name: string) => setBetters((cur: Better[]) => ([...cur, { name, amount: 0, matches: [] }]))} />}

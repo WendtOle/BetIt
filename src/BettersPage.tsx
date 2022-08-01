@@ -10,7 +10,7 @@ interface BettersPageProps {
 
 export const BettersPage = ({ betters, onAdd, onUpdateAmount }: BettersPageProps) => {
     return (<>
-        <CreateBetterCard onAdd={onAdd} />
+        <CreateBetterCard onAdd={onAdd} existingBetters={betters.map(({name}) => name)} />
         {betters.map((better: Better) => <BetterCard better={better} onUpdateAmount={onUpdateAmount(better.name)} key={better.name} />)}
     </>)
 
