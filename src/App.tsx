@@ -5,7 +5,7 @@ import { BettersPage } from "./BettersPage";
 import { EndedMatchesPage } from "./EndedMatchesPage";
 import { Navigation } from "./Navigation";
 import { Better, Match, Page } from "./types";
-import { defaultMatch, randomId, getBetters, defaultBetters } from './utils';
+import { randomId} from './utils';
 
 const DEFAULT_BET_AMOUNT = 1
 const BETTER_KEY = 'better'
@@ -39,6 +39,17 @@ export const App = (): ReactElement => {
     phase: 'betting',
     id: randomId()
   }, ...cur]))
+
+  const stopBettingOnMatch = (matchId: string) => {
+    setMatches(cur => {
+      return cur.map(match => {
+        if (match.id !== matchId) {
+          return match
+        }
+        return { ...match, phase: 'fighting'}
+      })
+    })
+  } 
 
   const onUpdateAmount = (name: string) => (amount: number, message: string) => {
     setBetters(cur => {
@@ -97,6 +108,7 @@ export const App = (): ReactElement => {
           registerBet={registerBet}
           closeMatch={closeMatch}
           allBetters={betters.filter(better => better.amount >= DEFAULT_BET_AMOUNT)}
+          stopBettingOnMatch={stopBettingOnMatch}
           addMatch={addMatch} />}
         {page === Page.ended && <EndedMatchesPage matches={ended} />}
         {page === Page.betters && <BettersPage onUpdateAmount={onUpdateAmount} betters={betters} onAdd={(name: string) => setBetters((cur: Better[]) => ([...cur, { name, amount: 0, history: [] }]))} />}

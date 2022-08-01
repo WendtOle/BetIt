@@ -9,20 +9,16 @@ import { getBetters } from './utils';
 
 interface MatchCardProps {
    match: Match,
-   setMatch?: (match: Match) => void
    allBetters?: Better[],
    registerBet?: (contestant: string) => (better: string) => void,
-   closeMatch?: (winner: string) => void
+   closeMatch?: (winner: string) => void,
+   stopBettingOnMatch?: () => void;
 }
 
-export const MatchCard = ({ match,closeMatch,  setMatch, allBetters,registerBet }: MatchCardProps): ReactElement => {
+export const MatchCard = ({ match,closeMatch, stopBettingOnMatch, allBetters,registerBet }: MatchCardProps): ReactElement => {
    const { first, second, betsFirst, betsSecond, phase, winner } = match
 
    const currentMatchBetter = getBetters([match])
-
-   const closeBetting = () => {
-      setMatch?.({ ...match, phase: 'fighting' })
-   }
 
    const getTitle = () => {
       if (phase !== 'ended' || !winner) {
@@ -45,7 +41,7 @@ export const MatchCard = ({ match,closeMatch,  setMatch, allBetters,registerBet 
             <ContestantColumn registerBet={registerBet?.(second)} disabled={phase !== 'betting'} bets={betsSecond} contestant={second} betterSuggestions={betterSuggestions} />
          </CardContent>
          <CardActions>
-            {phase === 'betting' && <Button onClick={closeBetting}>Close Betting</Button>}
+            {phase === 'betting' && <Button onClick={stopBettingOnMatch}>Close Betting</Button>}
             {phase === 'fighting' && <CloseMatchDialog contestants={[first, second]} onClose={closeMatch} />}
          </CardActions>
       </MatchCardTemplate>
