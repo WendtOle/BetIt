@@ -16,8 +16,9 @@ export const ContestantColumn = ({ bets, registerBet, contestant, disabled, bett
       return (
          <div>
             <Typography>{label}</Typography>
-            <div style={{ border: 'solid 1px black', padding: 8 }}>
+            <div style={{  padding: 8 }}>
                {bets.map(bet => <Chip key={bet} label={bet} />)}
+               {bets.length === 0 && "No bets"}
             </div>
          </div>
       )
