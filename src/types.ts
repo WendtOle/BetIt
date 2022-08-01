@@ -14,4 +14,4 @@ export enum Page {
     betters = 'BETTERS'
 }
 
-export interface Better { amount: number, matches: string[], name: string }
+export interface Better { amount: number, history: string[], name: string }

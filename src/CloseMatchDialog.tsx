@@ -3,7 +3,7 @@ import React, { ReactElement, useState } from "react"
 
 interface CloseMatchDialogProps {
     contestants: string[]
-    onClose: (name: string) => void
+    onClose?: (name: string) => void
 }
 
 export const CloseMatchDialog = ({ contestants, onClose }: CloseMatchDialogProps): ReactElement => {
@@ -17,7 +17,7 @@ export const CloseMatchDialog = ({ contestants, onClose }: CloseMatchDialogProps
                     {contestants.map(contestant =>
                     (<Button key={contestant} onClick={() => {
                         setOpen(false)
-                        onClose(contestant)
+                        onClose?.(contestant)
                     }
                     }>{contestant}</Button>)
                     )}

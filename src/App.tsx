@@ -30,19 +30,19 @@ export const App = (): ReactElement => {
     id: randomId()
   }, ...cur]))
 
-  const onUpdateAmount = (name: string) => (amount: number) => {
+  const onUpdateAmount = (name: string) => (amount: number, message: string) => {
     setBetters(cur => {
       return cur.map(better => {
         if (better.name !== name) {
           return better
         }
-        return { ...better, amount: better.amount + amount }
+        return { ...better, amount: better.amount + amount, history: [...better.history, message] }
       })
     })
   }
 
   const registerBet = (matchId: string) => (contestant: string) => (better: string) => {
-    onUpdateAmount(better)(-DEFAULT_BET_AMOUNT)
+    onUpdateAmount(better)(-DEFAULT_BET_AMOUNT, `(-1) bet on "${contestant}" in match "${matchId}"`)
     setMatches(cur => cur.map(match => {
       if (match.id !== matchId) {
         return match
@@ -55,6 +55,28 @@ export const App = (): ReactElement => {
     }))
   }
 
+  const closeMatch = (matchId: string) => (winner: string) => {
+    const match = matches.find(match => match.id === matchId)
+    if (!match){
+      throw Error('match should exists')
+    }
+    const pot = match.betsFirst.length + match.betsSecond.length
+    const betWinners = winner === match.first ? match.betsFirst : match. betsSecond
+    const winning = pot / betWinners.length
+    betWinners.forEach(betWinner => {
+      onUpdateAmount(betWinner)(winning, `(+${winning}) - won bet in match ${matchId} with winning "${winner}"`)
+    })
+    setMatches(cur => cur.map(match => {
+      if (match.id !== matchId) {
+        return match
+      }
+      return {
+        ...match,
+        phase: 'ended',
+        winner
+      }
+    }))
+  }
 
   return (
     <>
@@ -63,10 +85,11 @@ export const App = (): ReactElement => {
           matches={active}
           setMatches={setMatches}
           registerBet={registerBet}
+          closeMatch={closeMatch}
           allBetters={betters.filter(better => better.amount >= DEFAULT_BET_AMOUNT)}
           addMatch={addMatch} />}
         {page === Page.ended && <EndedMatchesPage matches={ended} />}
-        {page === Page.betters && <BettersPage onUpdateAmount={onUpdateAmount} betters={betters} onAdd={(name: string) => setBetters((cur: Better[]) => ([...cur, { name, amount: 0, matches: [] }]))} />}
+        {page === Page.betters && <BettersPage onUpdateAmount={onUpdateAmount} betters={betters} onAdd={(name: string) => setBetters((cur: Better[]) => ([...cur, { name, amount: 0, history: [] }]))} />}
       </Grid>
       <Navigation page={page} setPage={setPage} hasEndedMatches={ended.length > 0} />
     </>

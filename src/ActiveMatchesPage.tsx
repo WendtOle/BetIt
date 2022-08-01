@@ -8,10 +8,11 @@ interface ActiveMatchesPageProps {
   setMatches: (matches: Match[]) => void,
   addMatch: (contestants: string[]) => void,
   allBetters: Better[]
-  registerBet: (matchId: string) => (contestant: string) => (better: string) => void
+  registerBet: (matchId: string) => (contestant: string) => (better: string) => void,
+  closeMatch: (matchId: string) => (winner: string) => void
 }
 
-export const ActiveMatchesPage = ({ matches, setMatches, addMatch, allBetters, registerBet }: ActiveMatchesPageProps) => {
+export const ActiveMatchesPage = ({ matches, setMatches, addMatch, closeMatch, allBetters, registerBet }: ActiveMatchesPageProps) => {
   return (
     <>
       <CreateMatchCard addMatch={addMatch} />
@@ -21,6 +22,7 @@ export const ActiveMatchesPage = ({ matches, setMatches, addMatch, allBetters, r
           match={match}
           allBetters={allBetters}
           registerBet={registerBet(match.id)}
+          closeMatch={closeMatch(match.id)}
           setMatch={(newMatch) => {
             setMatches(matches.map(match => match.id === newMatch.id ? newMatch : match))
           }} />

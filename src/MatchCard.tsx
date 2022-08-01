@@ -11,20 +11,17 @@ interface MatchCardProps {
    match: Match,
    setMatch?: (match: Match) => void
    allBetters?: Better[],
-   registerBet?: (contestant: string) => (better: string) => void
+   registerBet?: (contestant: string) => (better: string) => void,
+   closeMatch?: (winner: string) => void
 }
 
-export const MatchCard = ({ match, setMatch, allBetters,registerBet }: MatchCardProps): ReactElement => {
+export const MatchCard = ({ match,closeMatch,  setMatch, allBetters,registerBet }: MatchCardProps): ReactElement => {
    const { first, second, betsFirst, betsSecond, phase, winner } = match
 
    const currentMatchBetter = getBetters([match])
 
    const closeBetting = () => {
       setMatch?.({ ...match, phase: 'fighting' })
-   }
-
-   const closeMatch = (name: string) => {
-      setMatch?.({ ...match, phase: 'ended', winner: name })
    }
 
    const getTitle = () => {
@@ -37,16 +34,13 @@ export const MatchCard = ({ match, setMatch, allBetters,registerBet }: MatchCard
       return <div>{firstFormatted} vs. {secondFormatted}</div>
    }
 
-   const updateBetter = (contestant: string) => (newBetters: string[]) => {
-      setMatch?.({ ...match, betsFirst: contestant === first ? newBetters : betsFirst, betsSecond: contestant === second ? newBetters : betsSecond })
-   }
-
    const betterSuggestions = (allBetters ?? []).filter(better => !currentMatchBetter.includes(better.name)).map(({name}) => name)
 
    return (
       <MatchCardTemplate >
          <CardContent>
-            <Typography style={{ margin: 'auto', marginBottom: 16 }} variant="h4">{getTitle()}</Typography>
+            <Typography style={{ margin: 'auto', marginBottom: 8 }} variant="h4">{getTitle()}</Typography>
+            <Typography style={{ margin: 'auto', marginBottom: 16 }}>Match Id: {match.id}</Typography>
             <ContestantColumn registerBet={registerBet?.(first)} disabled={phase !== 'betting'} bets={betsFirst} contestant={first} betterSuggestions={betterSuggestions} />
             <ContestantColumn registerBet={registerBet?.(second)} disabled={phase !== 'betting'} bets={betsSecond} contestant={second} betterSuggestions={betterSuggestions} />
          </CardContent>

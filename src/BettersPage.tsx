@@ -5,7 +5,7 @@ import { BetterCard } from "./BetterCard";
 interface BettersPageProps {
     betters: Better[],
     onAdd: (name: string) => void,
-    onUpdateAmount: (name: string) => (amount: number) => void
+    onUpdateAmount: (name: string) => (amount: number, message: string) => void
 }
 
 export const BettersPage = ({ betters, onAdd, onUpdateAmount }: BettersPageProps) => {
