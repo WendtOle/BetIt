@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material"
-import React, { ReactElement, useState } from "react"
+import React, { ReactElement, useState,useEffect } from "react"
 import { ActiveMatchesPage } from "./ActiveMatchesPage";
 import { BettersPage } from "./BettersPage";
 import { EndedMatchesPage } from "./EndedMatchesPage";
@@ -8,11 +8,21 @@ import { Better, Match, Page } from "./types";
 import { defaultMatch, randomId, getBetters, defaultBetters } from './utils';
 
 const DEFAULT_BET_AMOUNT = 1
+const BETTER_KEY = 'better'
+const MATCHES_KEY = 'matches'
 
 export const App = (): ReactElement => {
-  const [matches, setMatches] = useState<Match[]>([defaultMatch])
+  const [matches, setMatches] = useState<Match[]>(JSON.parse(localStorage.getItem(MATCHES_KEY) ?? '[]'))
   const [page, setPage] = useState<Page>(Page.active)
-  const [betters, setBetters] = useState<Better[]>(defaultBetters)
+  const [betters, setBetters] = useState<Better[]>(JSON.parse(localStorage.getItem(BETTER_KEY) ?? '[]'))
+
+  useEffect(() => {
+    localStorage.setItem(MATCHES_KEY,JSON.stringify(matches))
+  }, [matches])
+
+  useEffect(() => {
+    localStorage.setItem(BETTER_KEY,JSON.stringify(betters))
+  }, [betters])
 
   const { active, ended } = matches.reduce((acc: { active: Match[], ended: Match[] }, next: Match) => {
     if (next.phase === 'ended') {
