@@ -1,5 +1,5 @@
-import { FC, ReactNode } from "react"
-import { Button, TextField, Typography, Grid, Card, CardContent, CardActions, CardHeader } from "@mui/material"
+import { ReactNode } from "react"
+import { Grid, Card} from "@mui/material"
 
 interface MatchCardTemplateProps {
     children: ReactNode

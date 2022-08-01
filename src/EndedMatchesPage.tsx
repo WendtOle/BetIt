@@ -1,6 +1,4 @@
-import { Box, Grid, Typography, Button } from "@mui/material"
-import React, { ReactElement, useEffect, useState } from "react"
-import { CreateMatchCard } from "./CreateMatchCard";
+import React from "react"
 import { MatchCard } from "./MatchCard";
 import { Match } from "./types";
 

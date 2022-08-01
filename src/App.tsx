@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material"
+import { Grid } from "@mui/material"
 import React, { ReactElement, useState } from "react"
 import { ActiveMatchesPage } from "./ActiveMatchesPage";
 import { EndedMatchesPage } from "./EndedMatchesPage";

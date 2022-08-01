@@ -1,8 +1,7 @@
-import { Button, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions, CardActions, CardContent } from '@mui/material';
+import { Button, Typography, CardActions, CardContent } from '@mui/material';
 import React, { ReactElement, useState } from "react"
 import { InputField } from "./InputField";
 import { MatchCardTemplate } from "./MatchCardTemplate";
-import { Match } from "./types";
 
 interface CreateNewMatchProps {
     addMatch: (contestants: string[]) => void

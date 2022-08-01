@@ -1,4 +1,4 @@
-import { Button, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material"
+import { Button, Dialog, DialogTitle, DialogActions } from "@mui/material"
 import React, { ReactElement, useState } from "react"
 
 interface CloseMatchDialogProps {

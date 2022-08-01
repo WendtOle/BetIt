@@ -1,9 +1,8 @@
-import { Button, TextField, Typography, Card, CardContent, CardActions, CardHeader } from "@mui/material"
+import { Button, Typography, CardContent, CardActions } from "@mui/material"
 import React, { ReactElement } from "react"
 import { ContestantColumn } from './ContestantColumn';
 import { CloseMatchDialog } from './CloseMatchDialog';
 import { Match } from "./types";
-import { getByTitle } from "@testing-library/react";
 import { MatchCardTemplate } from "./MatchCardTemplate";
 
 interface MatchCardProps {
