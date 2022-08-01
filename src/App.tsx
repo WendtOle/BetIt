@@ -28,7 +28,7 @@ export const App = (): ReactElement => {
 
   return (
     <>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} style={{ marginBottom: 62 }}>
         {page === Page.active && <ActiveMatchesPage
           matches={active}
           setMatches={setMatches}
@@ -37,7 +37,6 @@ export const App = (): ReactElement => {
         {page === Page.ended && <EndedMatchesPage matches={ended} />}
       </Grid>
       <Navigation page={page} setPage={setPage} hasEndedMatches={ended.length > 0} />
-
     </>
   )
 }
