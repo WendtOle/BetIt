@@ -13,6 +13,7 @@ export const Navigation = ({ page, setPage, hasEndedMatches }: NavigationProps) 
         <BottomNavigation showLabels value={page} onChange={(e, newValue) => setPage(newValue)}>
             <BottomNavigationAction value={Page.active} label="Active" />
             {hasEndedMatches && <BottomNavigationAction value={Page.ended} label="Ended" />}
+            <BottomNavigationAction value={Page.betters} label="Betters" />
         </BottomNavigation>
     </Paper>)
 }

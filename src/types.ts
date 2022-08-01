@@ -10,5 +10,8 @@ export interface Match {
 
 export enum Page {
     active = 'ACTIVE',
-    ended = 'ENDED'
+    ended = 'ENDED',
+    betters = 'BETTERS'
 }
+
+export interface Better { amount: number, matches: string[], name: string }
