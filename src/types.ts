@@ -9,6 +9,6 @@ export interface Match {
 }
 
 export enum Page {
-    active = 'ACTIVE', 
+    active = 'ACTIVE',
     ended = 'ENDED'
-  }
+}

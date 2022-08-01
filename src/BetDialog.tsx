@@ -7,29 +7,29 @@ interface BetDialogProps {
     onSubmit: (name: string) => void
 }
 
-export const BetDialog = ({onSubmit, contestant}: BetDialogProps): ReactElement => {
+export const BetDialog = ({ onSubmit, contestant }: BetDialogProps): ReactElement => {
     const [open, setOpen] = useState(false)
     const [name, setName] = useState("")
-   return (
-    <>
-    <IconButton onClick={() => setOpen(true)}>+</IconButton>
-    <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Who wants to bet on {contestant}?</DialogTitle>
-        <DialogContent>
-            <InputField value={name} onValueChange={setName}/>
-        </DialogContent>
-        <DialogActions>
-            <Button
-                disabled={name === ''}
-                onClick={() => {
-                    setOpen(false)
-                    onSubmit(name)
-                    setName("")
-                }}>
-            Submit</Button>
-        </DialogActions>
-    </Dialog>
-    
-    </>
-   )
+    return (
+        <>
+            <IconButton onClick={() => setOpen(true)}>+</IconButton>
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogTitle>Who wants to bet on {contestant}?</DialogTitle>
+                <DialogContent>
+                    <InputField value={name} onValueChange={setName} />
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        disabled={name === ''}
+                        onClick={() => {
+                            setOpen(false)
+                            onSubmit(name)
+                            setName("")
+                        }}>
+                        Submit</Button>
+                </DialogActions>
+            </Dialog>
+
+        </>
+    )
 }

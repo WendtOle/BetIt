@@ -6,10 +6,10 @@ interface EndedMatchesPageProps {
     matches: Match[],
 }
 
-export const EndedMatchesPage = ({matches}: EndedMatchesPageProps) => {
+export const EndedMatchesPage = ({ matches }: EndedMatchesPageProps) => {
     return (
         <>
-            {matches.map((match, index) =><MatchCard key={index} match={match} />)}
+            {matches.map((match, index) => <MatchCard key={index} match={match} />)}
         </>
     )
 }

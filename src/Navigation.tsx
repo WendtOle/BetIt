@@ -8,11 +8,11 @@ interface NavigationProps {
     hasEndedMatches: boolean;
 }
 
-export const Navigation = ({page, setPage, hasEndedMatches}: NavigationProps) => {
-    return (<Paper style={{position: 'fixed', bottom: 0, left: 0, right: 0}}>
+export const Navigation = ({ page, setPage, hasEndedMatches }: NavigationProps) => {
+    return (<Paper style={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
         <BottomNavigation showLabels value={page} onChange={(e, newValue) => setPage(newValue)}>
-        <BottomNavigationAction value={Page.active} label="Active" />
-        {hasEndedMatches && <BottomNavigationAction value={Page.ended} label="Ended" />}
-    </BottomNavigation>
-        </Paper>)
+            <BottomNavigationAction value={Page.active} label="Active" />
+            {hasEndedMatches && <BottomNavigationAction value={Page.ended} label="Ended" />}
+        </BottomNavigation>
+    </Paper>)
 }

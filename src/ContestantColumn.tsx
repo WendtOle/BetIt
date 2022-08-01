@@ -9,12 +9,12 @@ interface ContestantColumnProps {
    disabled: boolean;
 }
 
-export const ContestantColumn = ({existingBets, onNewBet, contestant, disabled}: ContestantColumnProps): ReactElement => {
+export const ContestantColumn = ({ existingBets, onNewBet, contestant, disabled }: ContestantColumnProps): ReactElement => {
    return (
       <div>
          <Typography>Bets on "{contestant}" ({existingBets.length})</Typography>
-         <span style={{marginLeft: 8}}>{existingBets.join(', ')}</span>
-         {!disabled && <BetDialog contestant={contestant} onSubmit={onNewBet}/>}
-    </div>
+         <span style={{ marginLeft: 8 }}>{existingBets.join(', ')}</span>
+         {!disabled && <BetDialog contestant={contestant} onSubmit={onNewBet} />}
+      </div>
    )
 }
