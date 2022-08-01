@@ -1,13 +1,13 @@
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, IconButton } from "@mui/material"
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Autocomplete, TextField } from "@mui/material"
 import React, { ReactElement, useState } from "react"
-import { InputField } from "./InputField"
 
 interface BetDialogProps {
     contestant: string,
-    onSubmit: (name: string) => void
+    onSubmit: (name: string) => void,
+    betterSuggestions: string[];
 }
 
-export const BetDialog = ({ onSubmit, contestant }: BetDialogProps): ReactElement => {
+export const BetDialog = ({ onSubmit, contestant, betterSuggestions }: BetDialogProps): ReactElement => {
     const [open, setOpen] = useState(false)
     const [name, setName] = useState("")
     return (
@@ -16,7 +16,20 @@ export const BetDialog = ({ onSubmit, contestant }: BetDialogProps): ReactElemen
             <Dialog open={open} onClose={() => setOpen(false)}>
                 <DialogTitle>Who wants to bet on {contestant}?</DialogTitle>
                 <DialogContent>
-                    <InputField value={name} onValueChange={setName} />
+                    <Autocomplete
+                        value={name}
+                        onInputChange={(_, newValue) => {
+                            if (!newValue) {
+                                setName('')
+                                return
+                            }
+                            setName(newValue)
+                        }}
+                        freeSolo
+                        renderInput={(inputProps) => <TextField {...inputProps} />}
+                        options={betterSuggestions}
+                    />
+
                 </DialogContent>
                 <DialogActions>
                     <Button

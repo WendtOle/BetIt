@@ -4,20 +4,27 @@ import { ContestantColumn } from './ContestantColumn';
 import { CloseMatchDialog } from './CloseMatchDialog';
 import { Match } from "./types";
 import { MatchCardTemplate } from "./MatchCardTemplate";
+import { getBetters } from './utils';
 
 interface MatchCardProps {
    match: Match,
    setMatch?: (match: Match) => void
+   allBetters?: string[]
 }
 
-export const MatchCard = ({ match, setMatch }: MatchCardProps): ReactElement => {
+export const MatchCard = ({ match, setMatch , allBetters}: MatchCardProps): ReactElement => {
    const { first, second, betsFirst, betsSecond, phase, winner } = match
+
+   const currentMatchBetter = getBetters([match])
 
    const closeBetting = () => {
       setMatch?.({ ...match, phase: 'fighting' })
    }
 
    const onNewBet = (contestant: string) => (name: string) => {
+      if (currentMatchBetter.includes(name)) {
+         return
+      }
       if (first === contestant) {
          setMatch?.({ ...match, betsFirst: [...betsFirst, name] })
          return
@@ -39,12 +46,13 @@ export const MatchCard = ({ match, setMatch }: MatchCardProps): ReactElement => 
       return <div>{firstFormatted} vs. {secondFormatted}</div>
    }
 
+   const betterSuggestions = (allBetters ?? []).filter(better => !currentMatchBetter.includes(better))
    return (
       <MatchCardTemplate >
          <CardContent>
             <Typography style={{ margin: 'auto', marginBottom: 16 }} variant="h4">{getTitle()}</Typography>
-            <ContestantColumn disabled={phase !== 'betting'} existingBets={betsFirst} contestant={first} onNewBet={onNewBet(first)} />
-            <ContestantColumn disabled={phase !== 'betting'} existingBets={betsSecond} contestant={second} onNewBet={onNewBet(second)} />
+            <ContestantColumn disabled={phase !== 'betting'} existingBets={betsFirst} contestant={first} onNewBet={onNewBet(first)} betterSuggestions={betterSuggestions}/>
+            <ContestantColumn disabled={phase !== 'betting'} existingBets={betsSecond} contestant={second} onNewBet={onNewBet(second)} betterSuggestions={betterSuggestions}/>
          </CardContent>
          <CardActions>
             {phase === 'betting' && <Button onClick={closeBetting}>Close Betting</Button>}

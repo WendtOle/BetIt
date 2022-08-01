@@ -7,14 +7,15 @@ interface ContestantColumnProps {
    onNewBet: (name: string) => void;
    existingBets: string[],
    disabled: boolean;
+   betterSuggestions: string[]
 }
 
-export const ContestantColumn = ({ existingBets, onNewBet, contestant, disabled }: ContestantColumnProps): ReactElement => {
+export const ContestantColumn = ({ existingBets, onNewBet, contestant, disabled, betterSuggestions }: ContestantColumnProps): ReactElement => {
    return (
       <div>
          <Typography>Bets on "{contestant}" ({existingBets.length})</Typography>
          <span style={{ marginLeft: 8 }}>{existingBets.join(', ')}</span>
-         {!disabled && <BetDialog contestant={contestant} onSubmit={onNewBet} />}
+         {!disabled && <BetDialog contestant={contestant} onSubmit={onNewBet} betterSuggestions={betterSuggestions} />}
       </div>
    )
 }

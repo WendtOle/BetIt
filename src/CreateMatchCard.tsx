@@ -4,7 +4,7 @@ import { InputField } from "./InputField";
 import { MatchCardTemplate } from "./MatchCardTemplate";
 
 interface CreateNewMatchProps {
-    addMatch: (contestants: string[]) => void
+    addMatch: (contestants: string[]) => void,
 }
 
 export const CreateMatchCard = ({ addMatch }: CreateNewMatchProps): ReactElement => {

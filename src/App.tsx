@@ -4,7 +4,7 @@ import { ActiveMatchesPage } from "./ActiveMatchesPage";
 import { EndedMatchesPage } from "./EndedMatchesPage";
 import { Navigation } from "./Navigation";
 import { Match, Page } from "./types";
-import { defaultMatch, randomId } from './utils';
+import { defaultMatch, randomId, getBetters } from './utils';
 
 export const App = (): ReactElement => {
   const [matches, setMatches] = useState<Match[]>([defaultMatch])
@@ -32,6 +32,7 @@ export const App = (): ReactElement => {
         {page === Page.active && <ActiveMatchesPage
           matches={active}
           setMatches={setMatches}
+          allBetters={getBetters(matches)}
           addMatch={addMatch} />}
         {page === Page.ended && <EndedMatchesPage matches={ended} />}
       </Grid>

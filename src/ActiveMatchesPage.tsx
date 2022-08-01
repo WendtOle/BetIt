@@ -6,17 +6,22 @@ import { Match } from "./types";
 interface ActiveMatchesPageProps {
   matches: Match[],
   setMatches: (matches: Match[]) => void,
-  addMatch: (contestants: string[]) => void
+  addMatch: (contestants: string[]) => void,
+  allBetters: string[]
 }
 
-export const ActiveMatchesPage = ({ matches, setMatches, addMatch }: ActiveMatchesPageProps) => {
+export const ActiveMatchesPage = ({ matches, setMatches, addMatch, allBetters }: ActiveMatchesPageProps) => {
   return (
     <>
       <CreateMatchCard addMatch={addMatch} />
       {matches.map((match, index) =>
-        <MatchCard key={index} match={match} setMatch={(newMatch) => {
-          setMatches(matches.map(match => match.id === newMatch.id ? newMatch : match))
-        }} />
+        <MatchCard
+          key={index}
+          match={match}
+          allBetters={allBetters}
+          setMatch={(newMatch) => {
+            setMatches(matches.map(match => match.id === newMatch.id ? newMatch : match))
+          }} />
       )}
     </>
   )
