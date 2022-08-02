@@ -1,11 +1,12 @@
 import { Button, Typography, CardContent, CardActions } from "@mui/material"
 import React, { ReactElement } from "react"
 
-import { ContestantColumn } from './ContestantColumn';
+import { ContestantColumn, Suggestions } from './ContestantColumn';
 import { CloseMatchDialog } from './CloseMatchDialog';
 import { Better, Match } from "./types";
 import { MatchCardTemplate } from "./MatchCardTemplate";
 import { getBetters } from './utils';
+import { DEFAULT_BET_AMOUNT } from './App';
 
 interface MatchCardProps {
    match: Match,
@@ -31,7 +32,12 @@ export const MatchCard = ({ match,closeMatch, stopBettingOnMatch, allBetters,reg
       return <div>{firstFormatted} vs. {secondFormatted}</div>
    }
 
-   const betterSuggestions = (allBetters ?? []).filter(better => !currentMatchBetter.includes(better.name)).map(({name}) => name)
+   const betterSuggestions: Suggestions[] = (allBetters ?? []).map(better => {
+      const isSelected = currentMatchBetter.includes(better.name)
+      const outOfMoney = better.amount < DEFAULT_BET_AMOUNT
+      const reason = isSelected ? 'selected' : outOfMoney ? 'money' : undefined
+      return {name: better.name, disabledReason: reason, label: `${better.name} (${better.amount} €)`}
+   })
 
    return (
       <MatchCardTemplate >

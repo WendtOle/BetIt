@@ -14,7 +14,7 @@ export const BetterCard = ({ better, addToAccount, resetAccount }: BetterCardPro
         <CardContent >
             <Typography style={{ margin: 'auto', marginBottom: 16 }}>Amount: {better.amount}</Typography>
             <div style={{maxHeight: 100, overflow: "scroll"}}>
-                {better.history.map(entry => (<div>{entry}</div>))} 
+                {better.history.map((entry, index) => (<div key={index + entry }>{entry}</div>))} 
             </div>
         </CardContent>
         <CardActions >

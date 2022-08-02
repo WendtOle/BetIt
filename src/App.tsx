@@ -8,7 +8,7 @@ import { SettingsPage } from './SettingsPage';
 import { Better, Match, Page } from "./types";
 import { randomId} from './utils';
 
-const DEFAULT_BET_AMOUNT = 1
+export const DEFAULT_BET_AMOUNT = 1
 
 export const BETTER_KEY = 'better'
 export const MATCHES_KEY = 'matches'
@@ -144,7 +144,7 @@ export const App = (): ReactElement => {
           registerBet={registerBet}
           removeBet={removeBet}
           closeMatch={closeMatch}
-          allBetters={betters.filter(better => better.amount >= DEFAULT_BET_AMOUNT)}
+          allBetters={betters}
           stopBettingOnMatch={stopBettingOnMatch}
           addMatch={addMatch} />}
         {page === Page.ended && <EndedMatchesPage matches={ended} />}
