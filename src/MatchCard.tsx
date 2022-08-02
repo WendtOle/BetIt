@@ -32,6 +32,8 @@ export const MatchCard = ({ match,closeMatch, stopBettingOnMatch, allBetters,reg
       return <div>{firstFormatted} vs. {secondFormatted}</div>
    }
 
+   const getQuota = () => `${first} (${betsFirst.length}) - ${second} (${betsSecond.length})`
+
    const betterSuggestions: Suggestions[] = (allBetters ?? []).map(better => {
       const isSelected = currentMatchBetter.includes(better.name)
       const outOfMoney = better.amount < DEFAULT_BET_AMOUNT
@@ -44,6 +46,7 @@ export const MatchCard = ({ match,closeMatch, stopBettingOnMatch, allBetters,reg
          <CardContent>
             <Typography style={{ margin: 'auto', marginBottom: 8 }} variant="h4">{getTitle()}</Typography>
             <Typography style={{ margin: 'auto', marginBottom: 16 }}>Match Id: {match.id}</Typography>
+            <Typography style={{ margin: 'auto', marginBottom: 16 }}>Quota: {getQuota()}</Typography>
             <ContestantColumn 
                registerBet={registerBet?.(first)} 
                disabled={phase !== 'betting'} 

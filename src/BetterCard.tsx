@@ -10,11 +10,10 @@ interface BetterCardProps {
 
 export const BetterCard = ({ better, addToAccount, resetAccount }: BetterCardProps) => {
     return (<MatchCardTemplate>
-        <Typography style={{ margin: 'auto', marginBottom: 16 }} variant="h4">{better.name}</Typography>
+        <Typography style={{ margin: 'auto', marginBottom: 16 }} variant="h4">{better.name} - {better.amount} € </Typography>
         <CardContent >
-            <Typography style={{ margin: 'auto', marginBottom: 16 }}>Amount: {better.amount}</Typography>
             <div style={{maxHeight: 100, overflow: "scroll"}}>
-                {better.history.map((entry, index) => (<div key={index + entry }>{entry}</div>))} 
+                {better.history.map((entry, index) => (<div key={index + entry } style={{paddingBottom: 8}}>{entry}</div>))} 
             </div>
         </CardContent>
         <CardActions >
