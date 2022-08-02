@@ -63,7 +63,18 @@ export const App = (): ReactElement => {
     })
   } 
 
-  const onUpdateAmount = (name: string) => (amount: number, message: string) => {
+  const resetAccount = (name: string) => {
+    setBetters(cur => {
+      return cur.map(better => {
+        if (better.name !== name) {
+          return better
+        }
+        return { ...better, amount: 0, history: [...better.history, 'account reseted'] }
+      })
+    })
+  }
+
+  const addToAccount = (name: string) => (amount: number, message: string) => {
     setBetters(cur => {
       return cur.map(better => {
         if (better.name !== name) {
@@ -75,7 +86,7 @@ export const App = (): ReactElement => {
   }
 
   const registerBet = (matchId: string) => (contestant: string) => (better: string) => {
-    onUpdateAmount(better)(-DEFAULT_BET_AMOUNT, `(-1) bet on "${contestant}" in match "${matchId}"`)
+    addToAccount(better)(-DEFAULT_BET_AMOUNT, `(-1) bet on "${contestant}" in match "${matchId}"`)
     setMatches(cur => cur.map(match => {
       if (match.id !== matchId) {
         return match
@@ -97,7 +108,7 @@ export const App = (): ReactElement => {
     const betWinners = winner === match.first ? match.betsFirst : match. betsSecond
     const winning = pot / betWinners.length
     betWinners.forEach(betWinner => {
-      onUpdateAmount(betWinner)(winning, `(+${winning}) - won bet in match ${matchId} with winning "${winner}"`)
+      addToAccount(betWinner)(winning, `(+${winning}) - won bet in match ${matchId} with winning "${winner}"`)
     })
     setMatches(cur => cur.map(match => {
       if (match.id !== matchId) {
@@ -125,7 +136,8 @@ export const App = (): ReactElement => {
         {page === Page.ended && <EndedMatchesPage matches={ended} />}
         {page === Page.settings && <SettingsPage initData={initData} resetTournament={resetTournament}/>}
         {page === Page.betters && <BettersPage 
-          onUpdateAmount={onUpdateAmount} 
+          addToAccount={addToAccount} 
+          resetAccount={resetAccount}
           betters={betters} 
           onAdd={(name: string) => setBetters((cur: Better[]) => ([...cur, { name, amount: 0, history: [] }]))} />}
       </Grid>
