@@ -7,6 +7,7 @@ import { Better, Match } from "./types";
 import { MatchCardTemplate } from "./MatchCardTemplate";
 import { getBetters } from './utils';
 import { DEFAULT_BET_AMOUNT } from './App';
+import { ConfirmationDialog } from "./ConfirmationDialog";
 
 interface MatchCardProps {
    match: Match,
@@ -63,7 +64,7 @@ export const MatchCard = ({ match,closeMatch, stopBettingOnMatch, allBetters,reg
                removeBet={removeBet?.(second)}/>
          </CardContent>
          <CardActions>
-            {phase === 'betting' && <Button onClick={stopBettingOnMatch}>Close Betting</Button>}
+            {phase === 'betting' && <ConfirmationDialog onSubmit={stopBettingOnMatch ?? console.log} buttonTitle="Close betting" title="Close betting?" />}
             {phase === 'fighting' && <CloseMatchDialog contestants={[first, second]} onClose={closeMatch} />}
          </CardActions>
       </MatchCardTemplate>

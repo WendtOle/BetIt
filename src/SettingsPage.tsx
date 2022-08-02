@@ -1,5 +1,6 @@
 import { MatchCardTemplate } from "./MatchCardTemplate"
 import { Typography, CardActions, Button, CardContent } from '@mui/material';
+import { ConfirmationDialog } from "./ConfirmationDialog";
 
 interface SettingsPageProps {
     initData: () => void;
@@ -15,7 +16,7 @@ export const SettingsPage = ({initData, resetTournament}: SettingsPageProps) => 
                     <Typography style={{ margin: 'auto', marginBottom: 16 }}>Betters are kept without any Money in there accounts.</Typography>
                 </CardContent>
                 <CardActions >
-                    <Button onClick={resetTournament}>Reset</Button>
+                    <ConfirmationDialog buttonTitle="Reset" onSubmit={resetTournament}/>
                 </CardActions>
             </MatchCardTemplate>
             <MatchCardTemplate>
@@ -24,9 +25,10 @@ export const SettingsPage = ({initData, resetTournament}: SettingsPageProps) => 
                     <Typography style={{ margin: 'auto', marginBottom: 16 }}>Everything will be deleted.</Typography>
                 </CardContent>
                 <CardActions >
-                    <Button onClick={initData}>Clear</Button>
+                    <ConfirmationDialog buttonTitle="Clear" onSubmit={initData}/>
                 </CardActions>
             </MatchCardTemplate>
         </>
     )
 }
+
