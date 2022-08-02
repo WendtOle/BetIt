@@ -1,6 +1,5 @@
 import { MatchCardTemplate } from "./MatchCardTemplate"
 import { Typography, CardActions, Button, CardContent } from '@mui/material';
-import { MATCHES_KEY, BETTER_KEY } from './App';
 
 interface SettingsPageProps {
     initData: () => void;
