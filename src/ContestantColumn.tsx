@@ -7,9 +7,10 @@ interface ContestantColumnProps {
    disabled: boolean;
    betterSuggestions: string[],
    registerBet?: (name: string) => void;
+   removeBet?: (name: string) => void;
 }
 
-export const ContestantColumn = ({ bets, registerBet, contestant, disabled, betterSuggestions }: ContestantColumnProps): ReactElement => {
+export const ContestantColumn = ({ bets, registerBet, contestant, disabled, betterSuggestions, removeBet }: ContestantColumnProps): ReactElement => {
    const label = `Bets on "${contestant}"`
 
    if (disabled) {
@@ -29,13 +30,17 @@ export const ContestantColumn = ({ bets, registerBet, contestant, disabled, bett
          value={bets}
          style={{ paddingTop: 8 }}
          onChange={(_, newValue, reason, details) => {
-            if (!['createOption', 'selectOption'].includes(reason)) {
+            if (!['createOption', 'selectOption', 'removeOption'].includes(reason)) {
                return
             }
             if (!newValue) {
                return
             }
             if (!details?.option) {
+               return
+            }
+            if (reason === 'removeOption') {
+               removeBet?.(details.option)
                return
             }
             registerBet?.(details?.option)

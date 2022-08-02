@@ -5,15 +5,15 @@ import { Better, Match } from "./types";
 
 interface ActiveMatchesPageProps {
   matches: Match[],
-  setMatches: (matches: Match[]) => void,
   addMatch: (contestants: string[]) => void,
   allBetters: Better[]
   registerBet: (matchId: string) => (contestant: string) => (better: string) => void,
+  removeBet: (matchId: string) => (contestant: string) => (better: string) => void,
   closeMatch: (matchId: string) => (winner: string) => void
   stopBettingOnMatch: (matchId: string) => void;
 }
 
-export const ActiveMatchesPage = ({ matches, stopBettingOnMatch, setMatches, addMatch, closeMatch, allBetters, registerBet }: ActiveMatchesPageProps) => {
+export const ActiveMatchesPage = ({ matches, stopBettingOnMatch, removeBet, addMatch, closeMatch, allBetters, registerBet }: ActiveMatchesPageProps) => {
   return (
     <>
       <CreateMatchCard addMatch={addMatch} />
@@ -23,6 +23,7 @@ export const ActiveMatchesPage = ({ matches, stopBettingOnMatch, setMatches, add
           match={match}
           allBetters={allBetters}
           registerBet={registerBet(match.id)}
+          removeBet={removeBet(match.id)}
           closeMatch={closeMatch(match.id)}
           stopBettingOnMatch={() => stopBettingOnMatch(match.id)}
           />

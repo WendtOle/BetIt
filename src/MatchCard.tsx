@@ -11,11 +11,12 @@ interface MatchCardProps {
    match: Match,
    allBetters?: Better[],
    registerBet?: (contestant: string) => (better: string) => void,
+   removeBet?: (contestant: string) => (better: string) => void,
    closeMatch?: (winner: string) => void,
    stopBettingOnMatch?: () => void;
 }
 
-export const MatchCard = ({ match,closeMatch, stopBettingOnMatch, allBetters,registerBet }: MatchCardProps): ReactElement => {
+export const MatchCard = ({ match,closeMatch, stopBettingOnMatch, allBetters,registerBet,removeBet}: MatchCardProps): ReactElement => {
    const { first, second, betsFirst, betsSecond, phase, winner } = match
 
    const currentMatchBetter = getBetters([match])
@@ -37,8 +38,20 @@ export const MatchCard = ({ match,closeMatch, stopBettingOnMatch, allBetters,reg
          <CardContent>
             <Typography style={{ margin: 'auto', marginBottom: 8 }} variant="h4">{getTitle()}</Typography>
             <Typography style={{ margin: 'auto', marginBottom: 16 }}>Match Id: {match.id}</Typography>
-            <ContestantColumn registerBet={registerBet?.(first)} disabled={phase !== 'betting'} bets={betsFirst} contestant={first} betterSuggestions={betterSuggestions} />
-            <ContestantColumn registerBet={registerBet?.(second)} disabled={phase !== 'betting'} bets={betsSecond} contestant={second} betterSuggestions={betterSuggestions} />
+            <ContestantColumn 
+               registerBet={registerBet?.(first)} 
+               disabled={phase !== 'betting'} 
+               bets={betsFirst} 
+               contestant={first} 
+               betterSuggestions={betterSuggestions} 
+               removeBet={removeBet?.(first)}/>
+            <ContestantColumn 
+               registerBet={registerBet?.(second)} 
+               disabled={phase !== 'betting'} 
+               bets={betsSecond} 
+               contestant={second} 
+               betterSuggestions={betterSuggestions} 
+               removeBet={removeBet?.(second)}/>
          </CardContent>
          <CardActions>
             {phase === 'betting' && <Button onClick={stopBettingOnMatch}>Close Betting</Button>}

@@ -99,6 +99,20 @@ export const App = (): ReactElement => {
     }))
   }
 
+  const removeBet = (matchId: string) => (contestant: string) => (better: string) => {
+    addToAccount(better)(DEFAULT_BET_AMOUNT, `(+1) removed bet on "${contestant}" in match "${matchId}"`)
+    setMatches(cur => cur.map(match => {
+      if (match.id !== matchId) {
+        return match
+      }
+      return {
+        ...match,
+        betsFirst: match.betsFirst.filter(cur => cur !== better),
+        betsSecond: match.betsSecond.filter(cur => cur !== better),
+      }
+    }))
+  }
+
   const closeMatch = (matchId: string) => (winner: string) => {
     const match = matches.find(match => match.id === matchId)
     if (!match){
@@ -127,8 +141,8 @@ export const App = (): ReactElement => {
       <Grid container spacing={2} style={{ marginBottom: 62 }}>
         {page === Page.active && <ActiveMatchesPage
           matches={active}
-          setMatches={setMatches}
           registerBet={registerBet}
+          removeBet={removeBet}
           closeMatch={closeMatch}
           allBetters={betters.filter(better => better.amount >= DEFAULT_BET_AMOUNT)}
           stopBettingOnMatch={stopBettingOnMatch}
