@@ -58,6 +58,15 @@ export const App = (): ReactElement => {
         if (match.id !== matchId) {
           return match
         }
+        const {betsFirst, betsSecond, first, second} = match
+        if (betsFirst.length === 0) {
+          betsSecond.forEach(better => removeBet(match.id)(second)(better, 'no opponents'))
+          return {...match, betsSecond: [], phase:'fighting'}
+        }
+        if (betsSecond.length === 0) {
+          betsFirst.forEach(better => removeBet(match.id)(first)(better, 'no opponents'))
+          return {...match, betsFirst: [], phase:'fighting'}
+        }
         return { ...match, phase: 'fighting'}
       })
     })
@@ -99,8 +108,8 @@ export const App = (): ReactElement => {
     }))
   }
 
-  const removeBet = (matchId: string) => (contestant: string) => (better: string) => {
-    addToAccount(better)(DEFAULT_BET_AMOUNT, `(+1) removed bet on "${contestant}" in match "${matchId}"`)
+  const removeBet = (matchId: string) => (contestant: string) => (better: string, message?: string) => {
+    addToAccount(better)(DEFAULT_BET_AMOUNT, `(+1) removed bet on "${contestant}" in match "${matchId}" ` + (message ?? ''))
     setMatches(cur => cur.map(match => {
       if (match.id !== matchId) {
         return match
