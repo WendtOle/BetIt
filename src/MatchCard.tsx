@@ -42,11 +42,14 @@ export const MatchCard = ({ match,closeMatch, stopBettingOnMatch, allBetters,reg
       return {name: better.name, disabledReason: reason, label: `${better.name} (${better.amount} €)`}
    })
 
+   const hasBets = betsFirst.length > 0 && betsSecond.length > 0
+
    return (
       <MatchCardTemplate >
          <CardContent>
             <Typography style={{ margin: 'auto', marginBottom: 8 }} variant="h4">{getTitle()}</Typography>
             <Typography style={{ margin: 'auto', marginBottom: 16 }}>Match Id: {match.id}</Typography>
+            {phase === 'betting' || (hasBets) ? <>
             <Typography style={{ margin: 'auto', marginBottom: 16 }}>Quota: {getQuota()}</Typography>
             <ContestantColumn 
                registerBet={registerBet?.(first)} 
@@ -61,12 +64,13 @@ export const MatchCard = ({ match,closeMatch, stopBettingOnMatch, allBetters,reg
                bets={betsSecond} 
                contestant={second} 
                betterSuggestions={betterSuggestions} 
-               removeBet={removeBet?.(second)}/>
+               removeBet={removeBet?.(second)}/></> : 
+            <Typography style={{ margin: 'auto', marginBottom: 16 }}>No bets entered</Typography>}
          </CardContent>
-         <CardActions>
+         {phase !== 'ended' && <CardActions>
             {phase === 'betting' && <ConfirmationDialog onSubmit={stopBettingOnMatch ?? console.log} buttonTitle="Close betting" title="Close betting?" />}
             {phase === 'fighting' && <CloseMatchDialog contestants={[first, second]} onClose={closeMatch} />}
-         </CardActions>
+         </CardActions>}
       </MatchCardTemplate>
 
    )
