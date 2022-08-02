@@ -1,15 +1,17 @@
-import { Grid } from "@mui/material"
+import { AppBar, Grid, Typography } from '@mui/material';
 import React, { ReactElement, useState,useEffect } from "react"
 import { ActiveMatchesPage } from "./ActiveMatchesPage";
 import { BettersPage } from "./BettersPage";
 import { EndedMatchesPage } from "./EndedMatchesPage";
 import { Navigation } from "./Navigation";
+import { SettingsPage } from './SettingsPage';
 import { Better, Match, Page } from "./types";
 import { randomId} from './utils';
 
 const DEFAULT_BET_AMOUNT = 1
-const BETTER_KEY = 'better'
-const MATCHES_KEY = 'matches'
+
+export const BETTER_KEY = 'better'
+export const MATCHES_KEY = 'matches'
 
 export const App = (): ReactElement => {
   const [matches, setMatches] = useState<Match[]>(JSON.parse(localStorage.getItem(MATCHES_KEY) ?? '[]'))
@@ -23,6 +25,16 @@ export const App = (): ReactElement => {
   useEffect(() => {
     localStorage.setItem(BETTER_KEY,JSON.stringify(betters))
   }, [betters])
+
+  const initData = () => {
+    setMatches([])
+    setBetters([])
+  }
+
+  const resetTournament = () => {
+    setMatches([])
+    setBetters((cur) => cur.map(better => ({...better, history: [], amount: 0})))
+  }
 
   const { active, ended } = matches.reduce((acc: { active: Match[], ended: Match[] }, next: Match) => {
     if (next.phase === 'ended') {
@@ -111,7 +123,11 @@ export const App = (): ReactElement => {
           stopBettingOnMatch={stopBettingOnMatch}
           addMatch={addMatch} />}
         {page === Page.ended && <EndedMatchesPage matches={ended} />}
-        {page === Page.betters && <BettersPage onUpdateAmount={onUpdateAmount} betters={betters} onAdd={(name: string) => setBetters((cur: Better[]) => ([...cur, { name, amount: 0, history: [] }]))} />}
+        {page === Page.settings && <SettingsPage initData={initData} resetTournament={resetTournament}/>}
+        {page === Page.betters && <BettersPage 
+          onUpdateAmount={onUpdateAmount} 
+          betters={betters} 
+          onAdd={(name: string) => setBetters((cur: Better[]) => ([...cur, { name, amount: 0, history: [] }]))} />}
       </Grid>
       <Navigation page={page} setPage={setPage} hasEndedMatches={ended.length > 0} />
     </>
